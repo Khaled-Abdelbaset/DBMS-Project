@@ -5,7 +5,6 @@ source validation.sh
 
 checkTable $DBname
 if [[ $? -eq 1 ]]; then
-	echo $tableName
 	# Variables
 	declare -a dispalyData
 	declare -a records
@@ -16,6 +15,11 @@ if [[ $? -eq 1 ]]; then
 	valueToSelect=($(awk -F: -v pk="$PK" 'NR == 1 {print $pk}' $DBname/$tableName))
 	records=($(awk -F: -v pk="$PK" 'NR > 3 {print $pk}' $DBname/$tableName))
 	arrOfTypes=($(awk -F: 'NR==1 {gsub(":", " "); print $0}' $DBname/$tableName))
+
+	if [[ ${#records[@]} == 0 ]];then
+		echo "Table $tableName Is Empty, No Data To Select"
+		exitFunc
+	fi
 
 	clear
 	echo "Select From Table $tableName"

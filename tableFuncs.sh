@@ -55,7 +55,6 @@ function setPrimKey() {
 }
 
 function createColumns() {
-	declare -i numOfColumns
 	while true;
 	do
 		read -p "Enter number of Columns: " numOfColumns
@@ -73,10 +72,8 @@ function createColumns() {
 		    echo "Column $columnName Already Exists"
 		else
 		    checkName $columnName
-		    result=$?
-
-		    if [[ $result -eq 0 ]]; then
-			echo "Column $columnName Already Exist"
+		    if [[ $? -eq 0 ]]; then
+			continue
 		    else
 			colNames+=($columnName)
 			break
@@ -90,23 +87,23 @@ function createColumns() {
 	result=$?
 
 	if [[ ${#colNames[@]} -eq ${#colDataTypes[@]} && $result -le ${#colNames[@]} ]]; then
-	touch $db_name/$tableName
+	touch $DBname/$tableName
 	for ((i = 0; i < ${#colNames[@]}; i++)); do
 		if [[ $i+1 -eq ${#colNames[@]} ]]; then
-			echo ${colNames[$i]} >> $db_name/$tableName
+			echo ${colNames[$i]} >> $DBname/$tableName
 		else
-			echo -e "${colNames[$i]}:\c" >> $db_name/$tableName
+			echo -e "${colNames[$i]}:\c" >> $DBname/$tableName
 		fi
 	done
 	for ((i = 0; i < ${#colDataTypes[@]}; i++)); do
 		if [[ $i+1 -eq ${#colDataTypes[@]} ]]; then
-			echo ${colDataTypes[$i]} >> $db_name/$tableName
+			echo ${colDataTypes[$i]} >> $DBname/$tableName
 		else
-			echo -e "${colDataTypes[$i]}:\c" >> $db_name/$tableName
+			echo -e "${colDataTypes[$i]}:\c" >> $DBname/$tableName
 		fi
 	done
 
-	echo $result >> $db_name/$tableName
+	echo $result >> $DBname/$tableName
 	echo "${colNames[$result-1]} Was Set As PK To Table $tableName"
 	echo "Table $tableName Was Created Successfully"
 fi 

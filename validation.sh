@@ -26,19 +26,19 @@ function checkTable() {
 }
 
 function checkDB() {
-	available=`ls -F ~/Project | grep "/" | grep "_DB" | wc -l`
+	available=`ls -F $dataBases | grep "/" | grep "_DB" | wc -l`
 	if [[ $available == 0 ]];then
 		echo "No Available Data Bases!"
 		return 0
 	else
 		echo -e "Available DataBases: \c"
 		echo $available
-		ls -F | grep "/" | grep "_DB"| sed 's/\/$//'
+		ls -F $dataBases | grep "/" | grep "_DB"| sed 's/\/$//'
 
 		read -p "Enter Data Base Name: "
 		if [[ -z $REPLY ]]; then
 			echo "* No Data Base Entered, Back To Menu"
-		elif [[ -d $REPLY ]]; then
+		elif [[ -d $dataBases/$REPLY ]]; then
 			checkName $REPLY
 			if [[ $? == 0 ]]; then
 				return 0
@@ -84,7 +84,7 @@ function checkName() {
 }
 
 function validDT() {
-declare -a arrOfDT=($(awk -F: 'NR==2 {gsub(":", " "); print $0}' $DBname/$tableName))
+declare -a arrOfDT=($(awk -F: 'NR==2 {gsub(":", " "); print $0}' $dataBases/$DBname/$tableName))
     declare -i i=$2-1
 	
     if [[ ${arrOfDT[$i]} == "Integer" ]]; then
@@ -112,7 +112,7 @@ declare -a arrOfDT=($(awk -F: 'NR==2 {gsub(":", " "); print $0}' $DBname/$tableN
 }
 
 function validPK() {
-	declare -a uniqeRecords=($(awk -F: -v pk="$2" 'NR > 3 {print $pk}' $DBname/$tableName))
+	declare -a uniqeRecords=($(awk -F: -v pk="$2" 'NR > 3 {print $pk}' $dataBases/$DBname/$tableName))
 	for data in ${uniqeRecords[@]}; do
 		if [[ $data == $1 ]]; then
 			echo "* Value Of $1 Can't Be Repeated"

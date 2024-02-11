@@ -1,0 +1,12 @@
+#To Use OS44-DBMS
+	ADD The Project Folder To Your Home Directory
+
+#Follow These Commands
+	cd
+	vi .bashrc
+#add this line to file
+	export PATH="$PATH:/home/'your username'/Project/"
+#Restart your terminal
+#Run This Command to use OS44-DBMS
+	project.sh
+

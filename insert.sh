@@ -57,5 +57,6 @@ if [[ $? -eq 1 ]]; then
 		echo "* Error, All Data Must Be Valid"
 	fi
 fi
+
 exitFunc
 
